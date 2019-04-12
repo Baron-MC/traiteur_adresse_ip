@@ -20,5 +20,3 @@ def convertisseur_octet_binaire_decimal( octet_binaire ):
             octet_decimal += 2**(7 - i)               # L'octet en décimal est égale à 2^7-i
         i += 1                                    # Incrémentation de i avec i = i + 1
     return str(octet_decimal)                 # Renvoie octet_decimal au format str
-
-print(convertisseur_octet_binaire_decimal("01111111"))
