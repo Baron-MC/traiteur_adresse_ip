@@ -1,6 +1,9 @@
 def verification_masque( masque ):
     """ Verifie la validité du masque si ou renvoie de True sinon False """
-    if 0 < int(masque) < 32:      # Si le masque est supérieur à 0 et inférieur à 32
+    masque_valide = ['1', '2', '3', '4', '5', '6', '7', '8', '9',
+    '10', '11', '12', '13', '14', '15', '16', '17', '18', '19',
+    '20','21', '22', '23', '24', '25', '26', '27', '28', '29', '30']
+    if masque in masque_valide:   # Si le masque fait partie des masques valides
         return True                 # Renvoie True
     return False                  # Renvoie False
 
@@ -23,7 +26,7 @@ def verification(adresse):
     return True
 
 def saisie_adresse_ip():
-    """ Demande à l'utilisateur une adresse ip, renvoie sous forme de liste ["adress", "masque"] """
+    """ Demande à l'utilisateur une adresse ip, renvoie sous forme de liste ["adresse", "masque"] """
     adresse = input("Veuillez saisir une adresse en notation classless : ")  # Demande à l'utilisateur de saisir un adresse "X.X.X.X/Y"
     while verification(adresse) == False :  # Si l'adresse ne respecte pas la norme
             adresse = input("Veuillez saisir une adresse en notation classless : ")  # Demande à l'utilisateur de saisir un adresse "X.X.X.X/Y"
