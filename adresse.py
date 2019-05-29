@@ -5,24 +5,42 @@ def conversion_adresse_binaire( adresse_decimal ):
     """
     Conversion d'une adresse binaire en décimal
     Paramètre :
-    adresse_decimal = str() format : X.X.X.X
+    adresse_decimal = str() format : X.X.X.X OU adresse_decimal = list() format : [ X, X, X, X]
     Renvoie :
     adresse_binaire = list()
     """
-    adresse_decimal_split = adresse_decimal.split(".")
+    if isinstance(adresse_decimal, str):
+        adresse_decimal_split = adresse_decimal.split(".")
+    else:
+        adresse_decimal_split = adresse_decimal
     adresse_binaire = list()
     for octet in adresse_decimal_split:
-        adresse_binaire.append( outils.convertisseur_octet_decimal_binaire( octet ) )
+        adresse_binaire.append( outils.convertion_octet_decimal_vers_binaire( octet ) )
     return adresse_binaire
 
-def adresse_reseau_binaire( adresse_decimal, masque_decimal ):
+def conversion_adresse_decimal( adresse_binaire ):
+    """
+    A partir d'une adresse en binaire je veux obtenir l'adresse en décimal
+    Paramètre :
+    adresse_res_binaire : list()
+    Renvoie :
+    adresse_res_decimal : list()
+    """
+    adresse_decimal = list()
+
+    for octet in adresse_binaire:
+        adresse_decimal.append( outils.convertion_octet_binaire_vers_decimal( octet ) )
+
+    return adresse_decimal
+
+def adresse_reseau( adresse_decimal, masque_decimal ):
     """
     A partir d'une adresse et d'un masque en décimal on veut avoir une adresse réseau
     Paramètre :
     adresse_decimal = list()
     masque_decimal = list()
     Renvoie :
-    adresse_res_binaire = list()
+    adresse_res_decimal = list()
     """
     # Variables
     adresse_binaire = conversion_adresse_binaire( adresse_decimal ) # A partir de l'adresse déciaml j'obtiens l'adresse binaire
@@ -38,24 +56,12 @@ def adresse_reseau_binaire( adresse_decimal, masque_decimal ):
                 octet += '0'
         adresse_res_binaire.append( octet )
 
-    return adresse_res_binaire
-
-def adresse_reseau_decimal( adresse_res_binaire ):
-    """
-    A partir de l'adresse réseau en binaire je veux obtenir l'adresse réseau en décimal
-    Paramètre :
-    adresse_res_binaire : list()
-    Renvoie :
-    adresse_res_decimal : list()
-    """
-    adresse_res_decimal = list()
-
-    for octet in adresse_res_binaire:
-        adresse_res_decimal.append( outils.convertisseur_octet_binaire_decimal( octet ) )
+    adresse_res_decimal = conversion_adresse_decimal( adresse_res_binaire )
 
     return adresse_res_decimal
 
-def adresse_plus_haute( adresse_reseau_decimal, masque_decimal ):
+
+def broadcast( adresse_reseau_decimal, masque_decimal ):
     """
     A partir d'une adresse réseau en décimal et un masque en décimal renvoie l'adresse la plus haute
     Paramètres :
@@ -68,14 +74,22 @@ def adresse_plus_haute( adresse_reseau_decimal, masque_decimal ):
     masque_binaire = masque.masque_en_octets_binaire( masque_decimal ) # Masque en binaire
     adresse_res_binaire = conversion_adresse_binaire( adresse_reseau_decimal ) # Adresse réseau en binaire
 
+
     # Pour chaque octet dans le masque
     for octet in range( len(masque_binaire) ):
         # Pour chaque bit dans un octet
         for bit in range( len(masque_binaire[octet]) ):
-            if masque_binaire[octet][bit] == '0'
-                adresse_res_binaire[octet][bit] = '1'
+            if masque_binaire[octet][bit] == '0':
+                adresse_res_binaire[octet] = adresse_res_binaire[octet][:bit] + '1'
 
-    adresse_broadcast = 
+
+    # On possède maintenant l'adresse de brodacast
+    adresse_res_binaire[3] = adresse_res_binaire[3][: (len(adresse_res_binaire[3]) - 1)] + '1'
+
+    # On la convertit en décimal
+    adresse_diffusion_decimal = conversion_adresse_decimal( adresse_res_binaire )
+
+    return adresse_diffusion_decimal
 
 
 def adresse_plus_basse( adresse_reseau ):
@@ -84,21 +98,30 @@ def adresse_plus_basse( adresse_reseau ):
     Paramètre :
     adresse_reseau = list()
     Renvoie :
-    adresse_reseau = list()
+    adresse_pls_basse = list()
     """
-    nbr = int(adresse_reseau[3])
-    adresse_reseau[3] = str( nbr + 1 )
-    return adresse_reseau
+    adresse_pls_basse = adresse_reseau
+    nbr = int(adresse_pls_basse[3])
+    adresse_pls_basse[3] = str( nbr + 1 )
+    return adresse_pls_basse
 
-def affiche_adresse( adresse ):
+
+def adresse_plus_haute( adresse_brodcast ):
     """
-    Affichage d'un masque ou d'une adresse ip en décimal pointé
-    Paramètre :
-    adresse = list()
+    Paramètre:
+    adresse_broadcast = list() format = [X.X.X.X]
+    Renvoie :
+    adresse_pls_haute = liste() format = [X.X.X.X]
     """
-    adresse_affiche = str() # Variable qui contiendra l'adresse
-    # Boucle FOR pour créée la adresse
-    for octet in adresse:
-        adresse_affiche += ( octet + '.' )
-    # Affichage avec un slicing pour enlever le dernier '.' et un retour chariot
-    print( adresse_affiche[: (len(adresse_affiche) - 1) ] + '\t' )
+    adresse_brodcast[3] = str( int(adresse_brodcast[3]) - 1 )
+
+    adresse_pls_haute = adresse_brodcast
+
+    return adresse_pls_haute
+
+adresse_res = adresse_reseau(['192','168','1','94'], '24')
+print(adresse_res)
+adresse_pls_basse = adresse_plus_basse( adresse_res )
+print(adresse_res)
+
+print(adresse_pls_basse)

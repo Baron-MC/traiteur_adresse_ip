@@ -1,4 +1,6 @@
-def convertisseur_octet_decimal_binaire( octet_decimal ):
+""" Modules outils """
+
+def convertion_octet_decimal_vers_binaire( octet_decimal ):
     """ Convertie un octet en decimal en binaire """
     octet_binaire = str()                     # Création de la variable de type str qui va contenir la suite de bits
     octet_decimal = int( octet_decimal )
@@ -12,7 +14,7 @@ def convertisseur_octet_decimal_binaire( octet_decimal ):
 
 
 
-def convertisseur_octet_binaire_decimal( octet_binaire ):
+def convertion_octet_binaire_vers_decimal( octet_binaire ):
     """ Convertie un octet en binaire en decimal
     octet_binaire : string """
     octet_decimal = int()                     # Création de la variable de type int qui va contenir l'octet en decimal
