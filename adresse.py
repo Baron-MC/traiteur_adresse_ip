@@ -100,9 +100,14 @@ def adresse_plus_basse( adresse_reseau ):
     Renvoie :
     adresse_pls_basse = list()
     """
-    adresse_pls_basse = adresse_reseau
-    nbr = int(adresse_pls_basse[3])
-    adresse_pls_basse[3] = str( nbr + 1 )
+
+    # Variable
+    adresse_reseau_binaire = conversion_adresse_binaire( adresse_reseau )
+
+    # Traitement
+    adresse_reseau_binaire[3] = adresse_reseau_binaire[3][:7] + '1'
+    adresse_pls_basse = conversion_adresse_decimal( adresse_reseau_binaire )
+
     return adresse_pls_basse
 
 
@@ -113,15 +118,11 @@ def adresse_plus_haute( adresse_brodcast ):
     Renvoie :
     adresse_pls_haute = liste() format = [X.X.X.X]
     """
-    adresse_brodcast[3] = str( int(adresse_brodcast[3]) - 1 )
+    # Variable
+    adresse_brodcast_binaire = conversion_adresse_binaire( adresse_brodcast )
 
-    adresse_pls_haute = adresse_brodcast
+    # Traitement
+    adresse_brodcast_binaire[3] = adresse_brodcast_binaire[3][:7] + '0'
+    adresse_pls_haute = conversion_adresse_decimal( adresse_brodcast_binaire )
 
     return adresse_pls_haute
-
-adresse_res = adresse_reseau(['192','168','1','94'], '24')
-print(adresse_res)
-adresse_pls_basse = adresse_plus_basse( adresse_res )
-print(adresse_res)
-
-print(adresse_pls_basse)

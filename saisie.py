@@ -25,10 +25,17 @@ def verification(adresse):
         return False
     return True
 
-def saisie_adresse_ip():
+def saisie_adresse_ip_commande():
     """ Demande à l'utilisateur une adresse ip, renvoie sous forme de liste ["adresse", "masque"] """
+
     adresse = input("Veuillez saisir une adresse en notation classless : ")  # Demande à l'utilisateur de saisir un adresse "X.X.X.X/Y"
+    if adresse in ['STOP', 'stop', 'Stop']:
+        return 'stop'
+
     while verification(adresse) == False :  # Si l'adresse ne respecte pas la norme
-            adresse = input("Veuillez saisir une adresse en notation classless : ")  # Demande à l'utilisateur de saisir un adresse "X.X.X.X/Y"
+        adresse = input("Veuillez saisir une adresse en notation classless : ")  # Demande à l'utilisateur de saisir un adresse "X.X.X.X/Y"
+        if adresse in ['STOP', 'stop', 'Stop']:
+            return 'stop'
     adresse_masque_split = adresse.split("/") # Séparation de la chaine de caractère à partir du "/"
+
     return adresse_masque_split  # Renvoie l'adresse et le masque dans une liste '[adresse, masque]'
